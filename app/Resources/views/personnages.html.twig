@@ -1,0 +1,37 @@
+{# personnages.html.twig #}
+
+{%  extends 'base.html.twig' %}
+
+{% block container %}
+        <h1 class="pt-md-5 pb-md-5">
+            Welcome to your Arena !
+            <a type="button" href="/createPerso" class="btn btn-primary">Create a Perso here</a>
+        </h1>
+
+    <div class="row">
+        <div class="card-deck">
+         {% for perso in personnages %}
+             <div class="card">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{perso.name}}</h4>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Perso skills are coming...
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <h6>Status :
+                    {% if perso.status == 0 %}
+                        <span class="label label-danger">Mort !</span>
+                    {% else %}
+                        <span class="label label-primary">En vie</span>
+                    {% endif %}
+                    </h6>
+                </div>
+            </div>
+         {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
