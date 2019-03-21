@@ -11,8 +11,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Perso;
 use AppBundle\Form\PersoType;
-use AppBundle\Repository\PersoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,7 +27,7 @@ class PersoController extends Controller
         $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
         $persos = $persoRepository->findAll();
 
-        return $this->render('@app/personnages.html.twig', ['personnages' => $persos]);
+        return $this->render('@app/personnages.html.twig', ['personnages' => $persos, 'deleted' => false]);
     }
 
     /**
@@ -45,6 +45,7 @@ class PersoController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
             $perso->setStatus(1);
+            // ADD CHARACTERISTIC
 
             $entityManager->persist($perso);
             $entityManager->flush();
@@ -53,5 +54,48 @@ class PersoController extends Controller
         }
 
         return $this->render('@app/create.html.twig', ['isValidate' => false, 'form' => $formBuilder->createView()]);
+    }
+
+    /**
+     * @Route("/perso/{id}"),
+     * name="personnage_detail",
+     * requirements={"id"="\d+"}
+     */
+    public function showPerso($id){
+        $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
+        $perso = $persoRepository->findOneBy(['id' => $id]);
+
+        if ($perso) {
+            return $this->render('@app/perso.html.twig', ['perso' => $perso]);
+        }
+
+        return new JsonResponse(null, 404);
+    }
+
+    /**
+     * @Route("deletePerso/{id}"),
+     * name="personnage_suppression",
+     * methods={DELETE},
+     * requirements={"id"="\d+"}
+     */
+    public function deletePersonnage($id)
+    {
+        $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
+        $perso = $persoRepository->findBy(['id' => $id]);
+
+        if (!$perso)
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($perso);
+            $entityManager->flush();
+
+            //$persos = $persoRepository->findAll();
+
+            return new JsonResponse(
+                $this->container->get('router')->getContext()->getBaseUrl(), JsonResponse::HTTP_NO_CONTENT);
+            //return $this->render('@app/personnages.html.twig', ['personnages' => $persos, 'deleted' => true]);
+        }
+
+        return new JsonResponse(null, 404);
     }
 }

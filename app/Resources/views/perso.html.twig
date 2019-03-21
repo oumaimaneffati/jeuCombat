@@ -1,0 +1,16 @@
+{# perso.html.twig #}
+
+{%  extends 'base.html.twig' %}
+
+{% block container %}
+<h1 class="pt-md-5 pb-md-5">
+    {{ perso.name }}
+    <p id="perso_id" hidden>{{ perso.id }}</p>
+    <a type="button" href="#" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+</h1>
+
+<div class="row">
+    Perso attributes here...
+    <></>
+</div>
+{% endblock %}

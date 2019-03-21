@@ -1,0 +1,44 @@
+{# arena.html.twig #}
+
+{%  extends 'base.html.twig' %}
+
+{% block container %}
+    <h1 class="pt-md-5 pb-md-5">
+        Choose an opponent between the competitor's Perso
+    </h1>
+
+    <div class="row">
+        <div class="card-deck">
+            {% for opp in opponents %}
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">
+                            {{opp.name}}
+                            <a href="/perso/{{ perso.id }}"><span class="badge badge-dark">Detail</span></a>
+                        </h4>
+                    </div>
+                    <img class="card-img-top" style="width: 250px; padding: 5px" src="templates/images/spartan.png" alt="perso_avatar">
+                    <div class="card-body">
+                        <h6>Status :
+                            {% if perso.status == 0 %}
+                                <span class="badge badge-danger">Mort !</span>
+                            {% else %}
+                                <span class="badge badge-primary">En vie</span>
+                            {% endif %}
+                        </h6>
+                    </div>
+                    <div class="card-footer">
+                        <a type="button" class="btn btn-primary" href="/arena/{{ perso.id }}">Choose</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if deleted %}
+        <p class="bg-info">
+            Your Perso has been deleted !
+        </p>
+    {% endif %}
+
+{% endblock %}
