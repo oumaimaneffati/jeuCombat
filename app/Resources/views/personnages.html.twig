@@ -2,6 +2,18 @@
 
 {%  extends 'base.html.twig' %}
 
+
+{% block info %}
+    {% if deleted %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Your Perso has been removed
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block container %}
         <h1 class="pt-md-5 pb-md-5">
             Welcome to your Arena !
@@ -35,11 +47,4 @@
          {% endfor %}
         </div>
     </div>
-
-    {% if deleted %}
-        <p class="bg-info">
-            Your Perso has been deleted !
-        </p>
-    {% endif %}
-
 {% endblock %}

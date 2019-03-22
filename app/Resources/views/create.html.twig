@@ -2,11 +2,21 @@
 
 {% extends 'base.html.twig' %}
 
+{% block info %}
+    {% if isValidate %}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            Your Perso has been created
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+{% endblock %}
 
 {% block container %}
-    <div class="col-md-8">
+    <div class="row">
 
-        {% if isValidate == false %}
+        {% if isValidate == false%}
             <h2 class="my-4">
                 Create your Perso
             </h2>
@@ -15,8 +25,6 @@
             {{ form(form) }}
 
         {% else %}
-            <p>Perso has been created</p>
-
             <a href="/persos"><button type="button" class="btn btn-secondary">See your Persos</button></a>
         {% endif %}
     </div>

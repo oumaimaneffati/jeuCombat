@@ -22,7 +22,7 @@ class PersoController extends Controller
     /**
      * @Route("/persos", name="personnages_age")
      */
-    public function showPersonnages(Request $request)
+    public function showPersos(Request $request)
     {
         $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
         $persos = $persoRepository->findAll();
@@ -33,7 +33,7 @@ class PersoController extends Controller
     /**
      * @Route("/createPerso", name="personnage_creation")
      */
-    public function createPersonnage(Request $request)
+    public function createPerso(Request $request)
     {
 
         $perso = new Perso();
@@ -57,9 +57,11 @@ class PersoController extends Controller
     }
 
     /**
-     * @Route("/perso/{id}"),
-     * name="personnage_detail",
-     * requirements={"id"="\d+"}
+     * @Route(
+     *     "/perso/{id}",
+     *      name="personnage_detail",
+     *      requirements={"id"="\d+"}
+     *     )
      */
     public function showPerso($id){
         $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
@@ -73,29 +75,26 @@ class PersoController extends Controller
     }
 
     /**
-     * @Route("deletePerso/{id}"),
-     * name="personnage_suppression",
-     * methods={DELETE},
-     * requirements={"id"="\d+"}
+     * @Route(
+     *     "/deletePerso/{id}",
+     *     name="personnage_suppression",
+     *     methods={"DELETE"},
+     *     requirements={"id"="\d+"}
+     * )
      */
-    public function deletePersonnage($id)
+    public function deletePerso($id)
     {
         $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
-        $perso = $persoRepository->findBy(['id' => $id]);
+        $perso = $persoRepository->findOneBy(['id' => $id]);
 
-        if (!$perso)
-        {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($perso);
-            $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($perso);
+        $entityManager->flush();
 
-            //$persos = $persoRepository->findAll();
+        $persos = $persoRepository->findAll();
 
-            return new JsonResponse(
-                $this->container->get('router')->getContext()->getBaseUrl(), JsonResponse::HTTP_NO_CONTENT);
-            //return $this->render('@app/personnages.html.twig', ['personnages' => $persos, 'deleted' => true]);
-        }
-
-        return new JsonResponse(null, 404);
+//        return new JsonResponse(
+//            $this->container->get('router')->getContext()->getBaseUrl(), JsonResponse::HTTP_NO_CONTENT);
+        return $this->render('@app/personnages.html.twig', ['personnages' => $persos, 'deleted' => true]);
     }
 }
