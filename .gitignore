@@ -88,8 +88,10 @@ fabric.properties
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
 *.iml
+.idea/jeuCombat.iml
 modules.xml
 .idea/misc.xml
+.idea/workspace.xml
 .idea/php.xml
 # *.ipr
 

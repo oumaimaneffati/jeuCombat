@@ -13,6 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 class Perso
 {
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Caracteristiques")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $caracteristiques;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -92,5 +103,53 @@ class Perso
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set caracteristiques
+     *
+     * @param \AppBundle\Entity\Caracteristiques $caracteristiques
+     *
+     * @return Perso
+     */
+    public function setCaracteristiques(\AppBundle\Entity\Caracteristiques $caracteristiques)
+    {
+        $this->caracteristiques = $caracteristiques;
+
+        return $this;
+    }
+
+    /**
+     * Get caracteristiques
+     *
+     * @return \AppBundle\Entity\Caracteristiques
+     */
+    public function getCaracteristiques()
+    {
+        return $this->caracteristiques;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Perso
+     */
+    public function setUser(\AppBundle\Entity\User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
