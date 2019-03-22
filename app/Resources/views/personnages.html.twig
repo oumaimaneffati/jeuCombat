@@ -39,6 +39,18 @@
                             <span class="badge badge-primary">En vie</span>
                         {% endif %}
                     </h6>
+                    <h6>Dextérité :
+                        <span class="badge badge-secondary">{{ perso.caracteristiques.dexterite }}</span>
+                    </h6>
+                    <h6>Vitesse :
+                        <span class="badge badge-secondary">{{ perso.caracteristiques.vitesse }}</span>
+                    </h6>
+                    <h6>Force :
+                        <span class="badge badge-secondary">{{ perso.caracteristiques.forceperso }}</span>
+                    </h6>
+                    <h6>Constitution :
+                        <span class="badge badge-secondary">{{ perso.caracteristiques.constitution }}</span>
+                    </h6>
                 </div>
                 <div class="card-footer">
                     <a type="button" class="btn btn-primary" href="/arena/{{ perso.id }}">Choose</a>

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Perso;
+
 /**
  * PersoRepository
  *
@@ -10,5 +12,19 @@ namespace AppBundle\Repository;
  */
 class PersoRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Returns an array of all others users Perso's
+     * @param $user - the current user
+     * @return Perso[]
+     */
+    public function findOpponent($user)
+    {
+        $query = $this->createQueryBuilder("persos")
+            ->andWhere('persos.user <> :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+
+        return $query->execute();
+    }
 
 }

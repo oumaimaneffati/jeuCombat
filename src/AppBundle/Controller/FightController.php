@@ -9,20 +9,33 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Perso;
+use AppBundle\Repository\PersoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FightController extends Controller
 {
     /**
-     * @Route("/arena/{id}"),
-     * name="arena"
-     * requirements={"id"="\d+"}
+     * @Route(
+     *     "/arena/{id}",
+     *      name="arena",
+     *      requirements={"id"="\d+"}
+     *     )
      */
     public function index($id)
     {
-        // TODO : List all elligible Persos + choice selection to fight a Perso
+        $currentUser = $this->getUser();
+
+        if ($currentUser)
+        {
+            $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
+            $opponents = $persoRepository->findOpponent($currentUser);
+
+            return $this->render('@app/arena.html.twig',
+                ['opponents' => $opponents,'current_perso_id' => $id]);
+        }
+
+        return $this->render('@app/error.html.twig');
     }
 
     /**
@@ -32,6 +45,17 @@ class FightController extends Controller
      */
     public function fight($perso1_id, $perso2_id)
     {
-        // TODO : Compute fight between both Perso + Display results (Log)
+        $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
+        $att = $persoRepository->findOneBy(['id' => $perso1_id]);
+        $def = $persoRepository->findOneBy(['id' => $perso2_id]);
+
+        if ($att && $def)
+        {
+            $result = $att->fight($def);
+            return $this->render('@app/fight_result.html.twig',
+                ['result' => $result, 'att' => $att, 'def' => $def]);
+        }
+
+        return $this->render('@app/error.html.twig');
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Fig\Link\Tests\GenericLinkProviderTest;
 
 /**
  * Perso
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Perso
 {
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Caracteristiques")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Caracteristiques", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $caracteristiques;
@@ -151,5 +152,20 @@ class Perso
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Fight logic
+     * @param Perso
+     * @return FightLog[]
+     */
+    public function fight($opponent)
+    {
+        // Fight Logic here
+        $fightlogs = array(new FightLog());
+
+        // While everyone is alive, do round, add FightLog obj to $fightlogs
+
+        return $fightlogs;
     }
 }

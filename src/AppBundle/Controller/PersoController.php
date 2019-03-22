@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Caracteristiques;
 use AppBundle\Entity\Perso;
 use AppBundle\Form\PersoType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,10 +25,18 @@ class PersoController extends Controller
      */
     public function showPersos(Request $request)
     {
-        $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
-        $persos = $persoRepository->findAll();
+        $currentUser = $this->getUser();
 
-        return $this->render('@app/personnages.html.twig', ['personnages' => $persos, 'deleted' => false]);
+        if ($currentUser)
+        {
+            $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
+            $persos = $persoRepository->findBy(['user' => $currentUser]);
+
+            return $this->render('@app/personnages.html.twig', ['personnages' => $persos, 'deleted' => false]);
+        }
+
+        return $this->render('@app/error.html.twig');
+
     }
 
     /**
@@ -45,7 +54,15 @@ class PersoController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
             $perso->setStatus(1);
-            // ADD CHARACTERISTIC
+
+            // Associate to user
+            $currentUser = $this->getUser();
+            $perso->setUser($currentUser);
+
+            // Define caracteristique
+            $carac = new Caracteristiques();
+            $carac->generateRandomStats();
+            $perso->setCaracteristiques($carac);
 
             $entityManager->persist($perso);
             $entityManager->flush();
@@ -64,14 +81,20 @@ class PersoController extends Controller
      *     )
      */
     public function showPerso($id){
-        $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
-        $perso = $persoRepository->findOneBy(['id' => $id]);
 
-        if ($perso) {
-            return $this->render('@app/perso.html.twig', ['perso' => $perso]);
+        $currentUser = $this->getUser();
+
+        if ($currentUser)
+        {
+            $persoRepository = $this->getDoctrine()->getRepository(Perso::class);
+            $perso = $persoRepository->findOneBy(['user' => $currentUser, 'id' => $id]);
+
+            if ($perso) {
+                return $this->render('@app/perso.html.twig', ['perso' => $perso]);
+            }
         }
 
-        return new JsonResponse(null, 404);
+        return $this->render('@app/error.html.twig');
     }
 
     /**

@@ -1,0 +1,21 @@
+{# create.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block info %}
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            The fight between your {{ att.name }} and {{ def.name }} (from {{ def.user.username }}) ended !
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+{% endblock %}
+
+{% block container %}
+    <div class="col-md-8">
+        {% for r in result %}
+        {% endfor %}
+        FIGHT LOGS CONTENT HERE
+    </div>
+{% endblock %}

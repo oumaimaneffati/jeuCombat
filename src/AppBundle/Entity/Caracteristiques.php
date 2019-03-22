@@ -186,4 +186,20 @@ class Caracteristiques
     {
         return $this->vitesse;
     }
+
+    /**
+     * Set caracteristique values according to game rule
+     * pv is always 100
+     * constition is a random from 0 to 20
+     * force is a random from 10 to 35
+     * vitesse is a random from 5 to 15
+     * dexterite is a random from 5 to 15
+     */
+    public function generateRandomStats(){
+        $this->pv = 100;
+        $this->constitution = random_int(0, 20);
+        $this->forceperso = random_int(10, 35);
+        $this->vitesse = random_int(5, 15);
+        $this->dexterite = random_int(5, 15);
+    }
 }
